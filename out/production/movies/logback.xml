@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<!-- Where are log files日志文件在哪里 -->
+	<property name="LOG_HOME"
+		value="./" />
+
+	<!-- Output to Console输出到控制台 -->
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+
+		<!-- 是系统文件输出路径-->
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- 格式输出 %d:是日期，%thread:是线程名，%-5level：(error/debug/info...)是级别从左显示5个字符宽度
+			  %msg：是日志消息， %n:是换行符  %c是哪个类
+				line -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]  %c - %msg%n</pattern>
+
+			<charset>utf-8</charset>
+		</encoder>
+
+	</appender>
+	<!-- Output to File 是输出的方向文件-->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 指定日志文件拆分和压缩规则-->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- 通过指定压缩文件名称,来确定分割文件方式-->
+			<fileNamePattern>${LOG_HOME}/log.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<maxFileSize>1000MB</maxFileSize>
+			<!-- 文件拆分大小-->
+			<MaxHistory>60</MaxHistory>
+		</rollingPolicy>
+
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--%d:date，%thread:thread，%-5level：error/debug/info... %msg：message，%n:new 
+				line -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}
+				-%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!--log级别依次 <TRACE路径跟踪<DEBUG调试<INFO关键信息<WARN警告<ERROR错误, ALL是所有, OFF是不打,默认：DEBUG忽略大小写-->
+	<root info="off">
+		<!--1.STDOUT打印到数据库   2.CONSOLE打印到系统控制台   FILE打印到文件中-->
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="console" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
